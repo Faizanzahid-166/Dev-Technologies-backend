@@ -11,7 +11,7 @@ import contactRoute from "./routes/contactRoute.js";
 
 const server = express();
 server.use(cors({
-    origin: ['https://dev-technologies-frontend.vercel.app'],
+    origin: ['http://localhost:5173/'],
     credentials: true,
      methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }))
