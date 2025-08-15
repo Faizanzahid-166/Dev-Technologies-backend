@@ -10,10 +10,14 @@ import contactRoute from "./routes/contactRoute.js";
 
 
 const server = express();
+
+const allowedOrigins = ['http://localhost:5173', 'https://dev-technologies-frontend.vercel.app'];
+
 server.use(cors({
-    origin: ['http://localhost:5173/'],
+    origin: allowedOrigins,
     credentials: true,
      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+     allowedHeaders: ['Content-Type', 'Authorization'],
 }))
 server.use(express.json({limit:"16kb"}))
 server.use(express.urlencoded({extended:true, limit:"16kb"}))
