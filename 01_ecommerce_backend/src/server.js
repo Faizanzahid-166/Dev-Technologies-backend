@@ -8,9 +8,10 @@ import categoryRoutes from './routes/categoryRoutes.js'
 import ownProductRoute from './routes/fileuoloadRoute.js'
 import contactRoute from "./routes/contactRoute.js";
 
+
 const server = express();
 server.use(cors({
-    origin: "https://dev-technologies-frontend.vercel.app",
+    origin: process.env.CORS_ORIGIN ,
     credentials: true,
      methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }))
