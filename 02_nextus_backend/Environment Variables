@@ -1,0 +1,18 @@
+# connecting the ports and mongo_db from db/db_connection.js
+PORT=5000
+MONGO_DB_URL= URL
+
+# connecting the cors origin from app.js
+CORS_ORIGIN= localport of vite or use own framework localport
+#*
+
+
+#JWT
+JWT_SECRET=   secretnumber
+
+# connecting the cloudinary from utils/cloudinary.js
+CLOUDINARY_CLOUD_NAME= your name
+CLOUDINARY_API_KEY= your api
+CLOUDINARY_API_SECRET= your secret
+
+STRIPE_SECRET_KEY=key
