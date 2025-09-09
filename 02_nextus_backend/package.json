@@ -1,5 +1,5 @@
 {
-  "name": "01_nextus_backend",
+  "name": "02_nextus_backend",
   "version": "1.0.0",
   "description": "Investor & Entrepreneur Collaboration Platform",
   "keywords": [
@@ -28,6 +28,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "node-appwrite": "^18.0.0",
     "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "stripe": "^18.5.0",
     "uuid": "^11.1.0"
   },
