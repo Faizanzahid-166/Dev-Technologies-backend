@@ -8,6 +8,6 @@ const router = express.Router();
 router.put("/me", protect, updateProfile);
 
 // NEW: list all users
-router.get("/users", protect , listUsers);
+router.get("/users", listUsers);
 
 export default router;
