@@ -2,18 +2,20 @@
   "name": "02_nextus_backend",
   "version": "1.0.0",
   "description": "Investor & Entrepreneur Collaboration Platform",
-  "keywords": [
-    "node.js",
-    "express"
-  ],
-  "license": "ISC",
-  "author": "fz",
   "type": "module",
-  "main": "index.js",
+  "main": "src/index.js",
+  "author": "fz",
+  "license": "ISC",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+    "dev": "nodemon -r dotenv/config src/index.js",
+    "start": "node src/index.js",
+    "lint": "eslint . --ext .js",
+    "format": "prettier --write .",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@react-email/components": "^1.0.3",
+    "@react-email/render": "^2.0.1",
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^1.41.3",
@@ -27,12 +29,18 @@
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
     "node-appwrite": "^18.0.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "resend": "^6.6.0",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "stripe": "^18.5.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "eslint": "^8.50.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.2.5"
   }
 }

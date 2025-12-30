@@ -1,75 +1,37 @@
-import User from "../models/user.model.js";
-import jwt from "jsonwebtoken";
+import { getUserFromCookies } from "../lib/getUserFromCookies.js";
 
-export const protect = async (req, res, next) => {
-  let token;
+/**
+ * Protect routes: attach req.user if authenticated
+ */
+export async function protect(req, res, next) {
+  try {
+    const user = await getUserFromCookies(req);
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-
-    
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // fetch user so req.user has full object with _id
-      req.user = await User.findById(decoded.id).select("-password");
-
-      if (!req.user) {
-        return res.status(401).json({ message: "User not found" });
-      }
-
-      next();
-    } catch (err) {
-      console.error("Auth error:", err);
-      return res.status(401).json({ message: "Not authorized, token failed" });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Not authenticated" });
     }
-  }
 
-  if (!token) {
-    return res.status(401).json({ message: "Not authorized, no token" });
+    req.user = user; // attach user to request
+    next();
+  } catch (err) {
+    console.error("🔥 Auth middleware error:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
   }
-};
+}
 
-// Role-based access
-export const authorize = (...roles) => {
+// -------------------- Authorize by role --------------------
+export const authorize = (...allowedRoles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role.toLowerCase())) {
-      console.log("User role:", req.user.role);
-
-      return res.status(401).json({ message: "Not authorized" });
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Not authenticated" });
+    }
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ success: false, message: "Forbidden: insufficient permissions" });
     }
     next();
   };
-};
-
-
-// Protect Socket connections
-export const verifySocketJWT = async (socket, next) => {
-  try {
-    const token =
-      socket.handshake.auth?.token ||
-      socket.handshake.headers?.authorization?.split(" ")[1];
-
-    if (!token) return next(new Error("Not authorized: no token"));
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select("_id name email role");
-
-    if (!user) return next(new Error("User not found"));
-
-    // Attach normalized user to socket
-    socket.user = {
-      id: user._id.toString(), // always string
-      name: user.name || "Unknown",
-      role: user.role || "user",
-    };
-
-    next();
-  } catch (err) {
-    console.error("Socket auth error:", err.message);
-    next(new Error("Not authorized: invalid token"));
-  }
 };

@@ -1,74 +1,59 @@
-import dotenv from "dotenv";
-import connectDB from "./config/db.js";
-import { server } from "./server.js";
-import { Server } from "socket.io";
+// index.js
+// src/index.js
+import "./config/dotenv.js"; // load .env first
+
 import http from "http";
-import { verifySocketJWT } from "./middlewares/auth.middleware.js";
-import registerSignalingHandlers from "./socket/signaling.js";
-import { registerChatHandlers } from "./socket/chat.js";
+import { Server } from "socket.io";
+import { server } from "./server.js";
+import connectDB from "./database/mongodb/db.js";
 
-dotenv.config({ path: "./.env" });
+const PORT = process.env.PORT || 5000;
 
-const onlineUsers = new Map(); // userId -> socketId
+/* =======================
+   CREATE HTTP SERVER (ONCE)
+======================= */
+const httpServer = http.createServer(server);
 
-connectDB()
-  .then(() => {
-    const httpServer = http.createServer(server);
+/* =======================
+   SOCKET.IO
+======================= */
+const io = new Server(httpServer, {
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://dev-technologies-frontend-9xqc.vercel.app",
+    ],
+    credentials: true,
+  },
+});
 
-    const io = new Server(httpServer, {
-      cors: {
-        origin: process.env.CORS_ORIGIN,// || "http://localhost:5173",
-        methods: ["GET", "POST"],
-        credentials: true,
-      },
-    });
+io.on("connection", (socket) => {
+  console.log("🟢 Socket connected:", socket.id);
 
-    io.use(verifySocketJWT);
+  socket.on("send-message", (data) => {
+    io.emit("receive-message", data);
+  });
 
-    io.on("connection", (socket) => {
-      if (!socket.user) {
-        console.log("❌ Socket user missing, disconnecting");
-        return socket.disconnect(true);
-      }
+  socket.on("disconnect", () => {
+    console.log("🔴 Socket disconnected:", socket.id);
+  });
+});
 
-      const userId = socket.user.id;
+/* =======================
+   START SERVER
+======================= */
+const startServer = async () => {
+  try {
+    await connectDB(); // ✅ DB FIRST
 
-      // Prevent duplicate connections
-      if (onlineUsers.has(userId)) {
-        const oldSocketId = onlineUsers.get(userId);
-        io.sockets.sockets.get(oldSocketId)?.disconnect(true);
-      }
-
-      onlineUsers.set(userId, socket.id);
-      socket.join(userId);
-
-      console.log("🔌 New client connected:", socket.user.name);
-
-      io.emit("online-users", Array.from(onlineUsers.keys()));
-
-      // Rooms for video
-      socket.on("join-room", ({ roomId }) => {
-        socket.join(roomId);
-        socket.to(roomId).emit("participant-joined", { user: socket.user });
-      });
-
-      // Video signaling
-      registerSignalingHandlers(io, socket);
-
-      // Chat
-      registerChatHandlers(io, socket, onlineUsers);
-
-      // Cleanup
-      socket.on("disconnect", () => {
-        onlineUsers.delete(userId);
-        io.emit("online-users", Array.from(onlineUsers.keys()));
-        console.log("❌ Client disconnected:", socket.user.name);
-      });
-    });
-
-    const PORT = process.env.PORT || 3000;
     httpServer.listen(PORT, () => {
-      console.log(`✅ Server + Socket.IO running on port ${PORT}`);
+      console.log(`🚀 Server + Socket.IO running on port ${PORT}`);
     });
-  })
-  .catch((err) => console.error("DB connection failed !!!", err));
+  } catch (error) {
+    console.error("❌ Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

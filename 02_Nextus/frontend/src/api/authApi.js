@@ -2,7 +2,7 @@ import api from "./axiosConfig.js"; // ensure default export
 
 // Login
 export const loginUser = async (data) => {
-  const res = await api.post("/auth/login", data, {
+  const res = await api.post("/api/auth/login", data, {
     headers: { "Content-Type": "application/json" },
   });
 
@@ -16,7 +16,7 @@ export const loginUser = async (data) => {
 
 // Register
 export const registerUser = async (data) => {
-  const res = await api.post("/auth/register", data, {
+  const res = await api.post("/api/auth/register", data, {
     headers: { "Content-Type": "application/json" },
   });
   return res.data;
@@ -24,7 +24,7 @@ export const registerUser = async (data) => {
 
 // Update profile
 export const updateProfileApi = async (updates) => {
-  const res = await api.put("/profile/me", updates);
+  const res = await api.put("/api/profile/me", updates);
   localStorage.setItem("user", JSON.stringify(res.data));
   return res.data;
 };
@@ -33,7 +33,7 @@ export const updateProfileApi = async (updates) => {
 export const listUsers = async () => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No auth token found");
-  return await api.get("/profile/users");
+  return await api.get("/api/profile/users");
 };
 
 

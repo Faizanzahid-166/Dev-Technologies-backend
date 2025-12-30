@@ -1,5 +1,5 @@
 import Document from "../models/document.model.js";
-import { uploadCloudinary } from "../config/cloudinary.js";
+import { uploadCloudinary } from "../database/cloudinary/cloudinary.js";
 
 export const uploadDocument = async (req, res) => {
   try {

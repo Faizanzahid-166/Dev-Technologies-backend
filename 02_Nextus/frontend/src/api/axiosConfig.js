@@ -3,7 +3,7 @@ import axios from "axios";
 import realtimEnv from './realtimeEnv.js'
 
 const api = axios.create({
-  baseURL: realtimEnv.backendUrllocal || "http://localhost:3000/api",
+  baseURL: realtimEnv.backendUrlsocket || "http://localhost:3000",
   headers: { "Content-Type": "application/json" },
 });
 
