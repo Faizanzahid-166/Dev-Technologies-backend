@@ -5,13 +5,12 @@ const isProduction = process.env.NODE_ENV === "production";
 /**
  * Set a JWT token in an HTTP-only cookie
  * @param {string} token
- * @returns {string} serialized cookie header
  */
 function setTokenCookie(token) {
   return serialize("token", token, {
-    httpOnly: true,        // prevents JS access
-    secure: isProduction,  // HTTPS only in production
-    sameSite: "lax",       // CSRF protection
+    httpOnly: true,        
+    secure: isProduction,       // HTTPS only in production
+    sameSite: isProduction ? "none" : "lax", // cross-site cookies in production
     path: "/",
     maxAge: 60 * 60 * 24 * 7, // 7 days
   });
@@ -19,13 +18,12 @@ function setTokenCookie(token) {
 
 /**
  * Clear the token cookie
- * @returns {string} serialized cookie header
  */
 function clearTokenCookie() {
   return serialize("token", "", {
     httpOnly: true,
     secure: isProduction,
-    sameSite: "lax",
+    sameSite: isProduction ? "none" : "lax", // cross-site in production
     path: "/",
     maxAge: 0,
   });
@@ -33,8 +31,6 @@ function clearTokenCookie() {
 
 /**
  * Parse cookies from request header
- * @param {string} cookieHeader
- * @returns {Object} parsed cookies
  */
 function parseCookies(cookieHeader = "") {
   return parse(cookieHeader);
