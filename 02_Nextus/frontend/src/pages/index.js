@@ -1,41 +1,47 @@
-
+import Home from './home/Home.jsx'
+ 
  import Login from './auth/Login.jsx'
  import Registration from './auth/Registration.jsx'
+ import VerifyOtpPage from './auth/VerifyOtp.jsx'
+ import LogoutBtn from './auth/LogoutBtn.jsx'
 
- import EntrepreneurDashboard from './dashboard/EntrepreneurDashboard.jsx'
- import InvestorDashboard from './dashboard/InvestorDashboard.jsx'
 
- import Profile from './profile/Profile.jsx'
- import Listofusers from './profile/Listofusers.jsx'
+ import Admin from './dashboard/adminpannel/Admin.jsx'
+ import User from './dashboard/userpannel/User.jsx'
 
- import MyDocs from './documents/DocLists.jsx'
- import UploadDoc from './documents/UploadDoc.jsx'
- import Documents from './documents/Documents.jsx'
- import Download from './documents/Dowloaddoc.jsx'
- import AddSignature from './documents/Signature.jsx'
- import DocumentPreview from './documents/Pdfviewer.jsx'
+//  import Profile from './profile/Profile.jsx'
+//  import Listofusers from './profile/Listofusers.jsx'
 
- import MeetingsPage from './meetings/MeetingList.jsx'
- import UserList from './meetings/Videouserlist.jsx'
- import Messages from './meetings/Message.jsx'
- import Chat from './meetings/Chat.jsx'
+//  import MyDocs from './documents/DocLists.jsx'
+//  import UploadDoc from './documents/UploadDoc.jsx'
+//  import Documents from './documents/Documents.jsx'
+//  import Download from './documents/Dowloaddoc.jsx'
+//  import AddSignature from './documents/Signature.jsx'
+//  import DocumentPreview from './documents/Pdfviewer.jsx'
 
- import PaymentPage from './payments/PaymentForm.jsx'
- import PaymentForm from './payments/Realpayment.jsx'
+//  import MeetingsPage from './meetings/MeetingList.jsx'
+//  import UserList from './meetings/Videouserlist.jsx'
+//  import Messages from './meetings/Message.jsx'
+//  import Chat from './meetings/Chat.jsx'
+
+//  import PaymentPage from './payments/PaymentForm.jsx'
+//  import PaymentForm from './payments/Realpayment.jsx'
 
  import NotFound from './Error.jsx'
 export {
-    Registration,Login,
+    Home,
 
-    EntrepreneurDashboard,InvestorDashboard,
+    Registration,VerifyOtpPage,Login,LogoutBtn,
 
-    Profile,Listofusers,
+     User,Admin,
 
-    MyDocs,UploadDoc,Documents,Download,AddSignature,DocumentPreview,
+    // Profile,Listofusers,
 
-    MeetingsPage,UserList,Messages,Chat, 
+    // MyDocs,UploadDoc,Documents,Download,AddSignature,DocumentPreview,
+
+    // MeetingsPage,UserList,Messages,Chat, 
     
-    PaymentPage,PaymentForm,
+    // PaymentPage,PaymentForm,
 
     NotFound
 }

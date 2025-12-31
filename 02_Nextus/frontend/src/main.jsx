@@ -1,29 +1,27 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+// dark mode
+import ThemeProvider from './context/ThemeContextProvider.jsx'
 
+//react-router && routes-files
 import { RouterProvider} from "react-router";
-import { AuthProvider } from "./context/Authcontext.jsx";
-import { SocketProvider } from "./context/Socketcontext.jsx";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import routers from './Routers.jsx'
 
-import realtimEnv from './api/realtimeEnv.js'
-
-const stripePromise = loadStripe(realtimEnv.STRIPE_PUBLIC_KEY); // replace with your Stripe public key
+// react-redux
+import { Provider } from 'react-redux';
+import { store } from './redux/store.js';
 
 
-import routers from './App.jsx'
+
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-        <AuthProvider>
-         <SocketProvider>
-          <Elements stripe={stripePromise}>
+       <Provider store={store}>
+       <ThemeProvider>
            <RouterProvider router={routers} />
-          </Elements>
-         </SocketProvider>
-    </AuthProvider>
+    </ThemeProvider>
+    </Provider>
   </StrictMode>,
 )

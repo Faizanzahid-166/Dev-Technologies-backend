@@ -1,7 +1,7 @@
 // src/pages/Documents/Download.jsx
 import React, { useEffect, useState } from "react";
 import { getMyDocuments } from "../../api/documentApi";
-import api from "../../api/axiosConfig"; // adjust the path
+import api from "../../config/axiosConfig"; // adjust the path
 
 const Download = () => {
   const [documents, setDocuments] = useState([]);

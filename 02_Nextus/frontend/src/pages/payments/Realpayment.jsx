@@ -8,7 +8,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { deposit, withdraw, transfer } from "../../api/realpaymentApi.js";
-import realtimEnv from '../../api/realtimeEnv.js'
+import realtimEnv from '../../config/realtimeEnv.js'
 
 const stripePromise = loadStripe(realtimEnv.STRIPE_PUBLIC_KEY);
 

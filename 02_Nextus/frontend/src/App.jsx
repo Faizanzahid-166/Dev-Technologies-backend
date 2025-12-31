@@ -1,70 +1,24 @@
-import Home from './Home.jsx'
+import React, { useState, useContext } from "react";
+import { Outlet } from "react-router"; // ✅ FIX
+import { Navbar, Footer } from "./layout/00_index.js";
+import ThemeContext from "./context/themeContext.js";
 
-import {Registration, Login, 
-        EntrepreneurDashboard, InvestorDashboard, 
-        Profile,Listofusers,
-        MyDocs,UploadDoc,Documents,Download,AddSignature,
-        MeetingsPage, UserList,Messages,Chat,
-        PaymentPage,PaymentForm,
-        NotFound
-       } from './pages/index.js'
+function App() {
+  const { darkMode } = useContext(ThemeContext);
 
-import {createBrowserRouter,} from 'react-router'
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-
-
-
-const routers = createBrowserRouter([
- {
-    path: "/",
-    element: <Home />,
-    children: [
-      // { index: true, element: <ProtectedRoute><HomePage /></ProtectedRoute> },
-    
-       { path: "*", element: <NotFound /> },
-   
-     
-
-      // signup and login
-      { path: "/registration", element: <Registration /> },
-      { path: "/login", element: <Login /> },
-
-      // dashboard
-      { path: "/dashboard/investor", element: <EntrepreneurDashboard /> },
-      { path: "/dashboard/entrepreneur", element: <InvestorDashboard /> },
+  return (
+      <div className={darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}>
+      {/* Top Navbar */}
+      <Navbar  />
       
-      //profile
-      { path: "/profile", element: <Profile /> },
-       { path: "/finduser", element: <Listofusers /> },
+       <main className="min-h-screen">
+        <Outlet />
+      </main>
+      
+       <Footer />
+    </div>
+  );
 
+}
 
-      // doc routes
-      { path: "/documents", 
-        element: <ProtectedRoute><Documents /></ProtectedRoute>,
-        children: [
-        { path: "/documents/list", element: <ProtectedRoute><MyDocs /></ProtectedRoute> },
-        { path: "/documents/upload", element: <ProtectedRoute><UploadDoc /></ProtectedRoute> },
-        { path: "/documents/download", element: <ProtectedRoute><Download /></ProtectedRoute> },
-        { path: "/documents/signature", element: <ProtectedRoute><AddSignature /></ProtectedRoute> },
-        ] 
-      },
-
-      //meeting
-       { path: "/messages", element: <ProtectedRoute><Messages /></ProtectedRoute>,
-        children:[
-        { path: "/messages/meetingArangment", element: <ProtectedRoute><MeetingsPage /></ProtectedRoute> },
-        { path: "/messages/videocall", element: <ProtectedRoute><UserList /></ProtectedRoute> },
-        { path: "/messages/chat", element: <ProtectedRoute><Chat /></ProtectedRoute> },
-        ]
-       },
-
-       { path: "/transactions", element: <PaymentPage /> },
-       { path: "/realtransactions", element: <PaymentForm /> },
-    
-
-
-    ],
-  },
-]);
-
-export default routers;
+export default App;

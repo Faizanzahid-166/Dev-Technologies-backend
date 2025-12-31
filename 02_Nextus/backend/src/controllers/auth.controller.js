@@ -92,9 +92,9 @@ export const verifyOTP = asyncHandler(async (req, res) => {
 
   const { password, ...userWithoutPassword } = user.toObject();
 
-  res.status(200).json(
-    new ApiSuccess(200, { user: userWithoutPassword, token }, "OTP verified. Account activated.")
-  );
+  // Send user back
+res.json(new ApiSuccess(200, { user: userWithoutPassword }, "..."));
+
 });
 
 /// -------------------- RESEND OTP --------------------
