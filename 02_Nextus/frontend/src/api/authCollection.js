@@ -8,15 +8,15 @@ export const loginApi = (data) =>
 
 export const registerApi = (data) =>
   api.post("/api/auth/register", data).then(res => res.data);
-console.log("signup", registerApi)
+//console.log("signup", registerApi)
 
 export const verifyOtpApi = (data) =>
   api.post("/api/auth/verifyOTP", data).then(res => res.data);
-console.log("verifyOTP", verifyOtpApi)
+//console.log("verifyOTP", verifyOtpApi)
 
 export const resendOtpApi = (data) =>
   api.post("/api/auth/resendOTP", data).then(res => res.data);
-console.log("resendOTP", resendOtpApi)
+//console.log("resendOTP", resendOtpApi)
 
 export const logoutApi = () =>
   api.post("/api/auth/logout").then(res => res.data);
