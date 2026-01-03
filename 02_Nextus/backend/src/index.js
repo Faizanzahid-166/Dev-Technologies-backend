@@ -1,44 +1,53 @@
 // index.js
-// src/index.js
 import "./config/dotenv.js"; // load .env first
-
 import http from "http";
 import { Server } from "socket.io";
-import { server } from "./server.js";
+import { server as app } from "./server.js";
 import connectDB from "./database/mongodb/db.js";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
-/* =======================
-   CREATE HTTP SERVER (ONCE)
-======================= */
-const httpServer = http.createServer(server);
+// 1️⃣ Create HTTP server from Express app
+const httpServer = http.createServer(app);
 
-/* =======================
-   SOCKET.IO
-======================= */
+// 2️⃣ Attach Socket.IO to SAME server
 const io = new Server(httpServer, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "http://localhost:3000",
       "https://dev-technologies-frontend-9xqc.vercel.app",
     ],
     credentials: true,
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("🟢 Socket connected:", socket.id);
+// 3️⃣ Socket.IO logic
+const onlineUsers = new Map();
 
-  socket.on("send-message", (data) => {
-    io.emit("receive-message", data);
+io.on("connection", (socket) => {
+  console.log("🟢 User connected:", socket.id);
+
+  socket.on("userOnline", (userId) => {
+    if (!onlineUsers.has(userId)) onlineUsers.set(userId, []);
+    onlineUsers.get(userId).push(socket.id);
+
+    io.emit("onlineUsers", Array.from(onlineUsers.keys()));
   });
 
   socket.on("disconnect", () => {
-    console.log("🔴 Socket disconnected:", socket.id);
+    console.log("🔴 User disconnected:", socket.id);
+
+    for (let [userId, sockets] of onlineUsers) {
+      const filtered = sockets.filter(id => id !== socket.id);
+      if (filtered.length > 0) onlineUsers.set(userId, filtered);
+      else onlineUsers.delete(userId);
+    }
+
+    io.emit("onlineUsers", Array.from(onlineUsers.keys()));
   });
 });
+
+
 
 /* =======================
    START SERVER

@@ -55,7 +55,7 @@ server.use(morgan("dev"));
 server.use("/api/auth", authRoutes);
 server.use("/api/profile", profileRoutes);
 server.use("/api/meetings", meetingRoutes);
-server.use("/api/messages", messageRoutes);
+server.use("/api/chat", messageRoutes);
 server.use("/api/video", videoRoutes);
 server.use("/api/documents", documentRoutes);
 server.use("/api/payments", paymentRoutes);

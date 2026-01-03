@@ -3,8 +3,7 @@ import api from "../config/axiosConfig.js";
 
 /* -------- AUTH -------- */
 export const loginApi = (data) =>
-  api.post("/api/auth/login", data).then(res => res.data);
-
+  api.post("/api/auth/login", data).then(res => res.data)
 
 export const registerApi = (data) =>
   api.post("/api/auth/register", data).then(res => res.data);

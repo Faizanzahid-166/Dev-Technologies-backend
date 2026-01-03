@@ -54,6 +54,13 @@ const authSlice = createSlice({
   state.isAuthenticated = false;   // ❌ stay logged out
   state.message = action.payload.message || "OTP verified. Please login.";
 })
+
+// .addCase(verifyOtpThunk.fulfilled, (state, action) => {
+//   state.loading = false;
+//   state.user = action.payload.data.user;      // ✅ store verified user
+//   state.isAuthenticated = true;               // ✅ mark logged in
+//   state.message = action.payload.message || "OTP verified successfully";
+// })
       .addCase(verifyOtpThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "OTP verification failed";

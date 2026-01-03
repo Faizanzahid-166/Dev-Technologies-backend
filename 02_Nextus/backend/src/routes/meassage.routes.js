@@ -1,12 +1,19 @@
-// src/routes/message.routes.js
 import express from "express";
-import { protect } from "../middlewares/auth.middleware.js";
-import { sendMessage, getMessages,markAsRead } from "../controllers/message.contoller.js";
+import {
+  createOrGetConversation,
+  sendMessage,
+  getMyConversations,
+  getConversationMessages,
+} from "../controllers/chat-logic/chat.controller.js";
+import  { getAllUsersForChat }  from '../controllers/chat-logic/users.controller.js'
+import {protect} from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/", protect, sendMessage);
-router.get("/:userId", protect, getMessages);
-router.put("/:userId/read", protect, markAsRead);
+router.post("/conversation", protect, createOrGetConversation);
+router.get("/conversations", protect, getMyConversations);
+router.post("/message", protect, sendMessage);
+router.get("/messages/:conversationId", protect, getConversationMessages);
+router.get("/chat-users", protect, getAllUsersForChat);
 
 export default router;

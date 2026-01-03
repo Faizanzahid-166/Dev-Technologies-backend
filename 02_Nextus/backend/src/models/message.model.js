@@ -1,28 +1,21 @@
-// src/models/message.model.js
+// src/models/MessageModel.js
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema(
-  {
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    recipient: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    conversationId: { type: String, index: true }, // e.g., user1_user2
-    content: { type: String, required: true },
-    type: {
-      type: String,
-      enum: ["text", "image", "file"],
-      default: "text",
-    },
-    fileUrl: { type: String }, // optional for image/file
-    status: {
-      type: String,
-      enum: ["sent", "delivered", "read"],
-      default: "sent",
-    },
+const MessageSchema = new mongoose.Schema({
+  conversationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Conversation",
+    required: true,
   },
-  { timestamps: true }
-);
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  text: { type: String },
+  attachments: [{ type: String }], // images, files
+  seenBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+}, { timestamps: true });
 
-messageSchema.index({ sender: 1, recipient: 1, createdAt: -1 });
-
-export default mongoose.model("Message", messageSchema);
-
+export default mongoose.models.Message ||
+  mongoose.model("Message", MessageSchema);

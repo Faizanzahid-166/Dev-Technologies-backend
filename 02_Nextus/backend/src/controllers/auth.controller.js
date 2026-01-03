@@ -136,15 +136,22 @@ export const resendOTP = asyncHandler(async (req, res) => {
 export const loginUser = asyncHandler(async (req, res) => {
   // Validate request
   const parsed = loginSchema.safeParse(req.body);
-  if (!parsed.success) throw new ApiError(400, "Invalid login data", parsed.error.errors);
+   // ✅ ALWAYS check success BEFORE using parsed.data
+  if (!parsed.success) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid login data",
+      errors: parsed.error.errors,
+    });
+  }
 
   const { email, password } = parsed.data;
 
   const user = await User.findOne({ email }).select("+password");
-  if (!user) throw new ApiError(400, "Invalid credentials");
+  if (!user)  new ApiError(400, "Invalid credentials");
 
   const match = await comparePassword(password, user.password);
-  if (!match) throw new ApiError(400, "Invalid credentials");
+  if (!match)  new ApiError(400, "Invalid credentials");
 
   const token = signToken({ id: user._id, role: user.role });
   const cookieHeader = getAuthCookieHeader(token);

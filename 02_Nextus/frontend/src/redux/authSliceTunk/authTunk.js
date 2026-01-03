@@ -1,5 +1,6 @@
 // src/redux/auth/authThunks.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import socket from "../../scoket/scoket.js";
 import {
   loginApi,
   registerApi,
@@ -14,7 +15,14 @@ export const loginThunk = createAsyncThunk(
   "auth/login",
   async (data, { rejectWithValue }) => {
     try {
-      return await loginApi(data);
+      const res = await loginApi(data);
+      console.log(res)
+        const userId = res.data.user._id; // ✅ CORRECT PATH
+
+      // connect socket AFTER login
+      socket.connect();
+      socket.emit("userOnline", userId);
+      return res
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -72,7 +80,10 @@ export const logoutThunk = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      return await logoutApi();
+      const res = await logoutApi();
+       // ✅ stop realtime connection
+      socket.disconnect();
+      return res
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
     }
