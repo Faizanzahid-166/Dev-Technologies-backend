@@ -9,9 +9,15 @@ const connectDB = async () => {
     }
 
     // Connect to MongoDB without deprecated options
-    const connection = await mongoose.connect(`${process.env.MONGO_DB_URL}/${DB_NAME}`);
+    const connection = await mongoose.connect(`${process.env.MONGO_DB_URL}/${DB_NAME}`, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      family: 4,
+    });
 
     console.log(`✅ MongoDB connected! DB HOST: ${connection.connection.host}`);
+    console.log(DB_NAME, "database");
+
 
     // Automatically create root admin if it doesn't exist
     await createRootAdmin();

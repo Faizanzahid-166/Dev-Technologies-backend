@@ -7,7 +7,7 @@
   "author": "fz",
   "license": "ISC",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.js",
+     "dev": "nodemon --exec node --dns-result-order=ipv4first src/index.js",
     "start": "node src/index.js",
     "lint": "eslint . --ext .js",
     "format": "prettier --write .",

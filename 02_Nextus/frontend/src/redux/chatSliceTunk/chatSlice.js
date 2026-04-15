@@ -27,19 +27,26 @@ const chatSlice = createSlice({
     },
 
     // 🔥 socket.io incoming message
-    addMessageRealtime: (state, action) => {
-      const message = action.payload;
+   addMessageRealtime: (state, action) => {
+  const message = action.payload;
 
-      state.messages.push(message);
+  const isCurrentChat =
+    state.currentConversation?._id === message.conversationId;
 
-      // update sidebar last message
-      const convo = state.conversations.find(
-        (c) => c._id === message.conversationId
-      );
-      if (convo) {
-        convo.lastMessage = message;
-      }
-    },
+  // ✅ only show message if chat is open
+  if (isCurrentChat) {
+    state.messages.push(message);
+  }
+
+  // update sidebar last message ALWAYS
+  const convo = state.conversations.find(
+    (c) => c._id === message.conversationId
+  );
+
+  if (convo) {
+    convo.lastMessage = message;
+  }
+},
   },
 
   extraReducers: (builder) => {
