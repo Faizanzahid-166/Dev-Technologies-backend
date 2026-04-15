@@ -1,22 +1,33 @@
 import multer from "multer";
-import fs from "fs";
-import path from "path";
 
-// Create local uploads folder
-const uploadDir = path.resolve("public", "uploads");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+/**
+ * Multer memory storage (Cloudinary compatible)
+ */
+const storage = multer.memoryStorage();
 
-// Multer storage config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const uniqueName = `${Date.now()}-${file.originalname}`;
-    cb(null, uniqueName);
+/**
+ * File filter (PDF only)
+ */
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "application/pdf") {
+    cb(null, true);
+  } else {
+    cb(
+      new multer.MulterError(
+        "LIMIT_UNEXPECTED_FILE",
+        "Only PDF files are allowed"
+      )
+    );
+  }
+};
+
+/**
+ * Multer instance
+ */
+export const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 30 * 1024 * 1024, // ✅ 30 MB
   },
 });
-
-// Export multer instance
-export const upload = multer({ storage });
-
-

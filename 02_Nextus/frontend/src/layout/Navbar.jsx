@@ -38,12 +38,10 @@ useEffect(() => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "Projects", path: "/projects" },
-    { name: "Docs", path: "/docs" },
     { name: "Contact", path: "/contact" },
-    { name: "Code Tool", path: "/codeEditor" },
-    { name: "Error", path: "/error" },
-  ];
+     user && { name: "Profile", path: user.role === "customer" ? "/dashboard/user-pannel" : "/dashboard/admin-pannel"},
+    ].filter(Boolean)
+  
 
   return (
     <>

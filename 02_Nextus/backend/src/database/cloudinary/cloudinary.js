@@ -1,43 +1,64 @@
 import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+/**
+ * Cloudinary config
+ */
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadCloudinary = async (localFilePath, mimetype) => {
-  try {
-    const isPdf = mimetype === "application/pdf";
-    const resourceType = isPdf ? "raw" : "image"; // raw for PDF/docs
-
-    const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: resourceType,
-      folder: "documents",
-      use_filename: true,
-      unique_filename: true,
-    });
-
-    // Return secure URL for public access
-    let downloadUrl = response.secure_url;
-
-    // For PDFs, optionally generate signed URL
-    if (isPdf) {
-      downloadUrl = cloudinary.utils.private_download_url(
-        response.public_id,
-        "pdf",
-        { resource_type: "raw" }
-      );
+/**
+ * Upload buffer to Cloudinary
+ * Supports PDFs (raw) & Images (image)
+ *
+ * @param {Buffer} fileBuffer
+ * @param {string} folder - e.g. 02_next_us/documents/<userId>
+ * @param {string} mimetype - file mimetype
+ */
+const uploadCloudinary = (
+  fileBuffer,
+  folder = "documents",
+  mimetype = "application/pdf"
+) => {
+  return new Promise((resolve, reject) => {
+    if (!fileBuffer) {
+      return reject(new Error("File buffer is required"));
     }
 
-    return { ...response, downloadUrl };
-  } catch (err) {
-    console.error("Cloudinary upload error:", err.message);
-    return null;
-  }
+    const isPdf = mimetype === "application/pdf";
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,                              // ✅ nested folders supported
+        resource_type: isPdf ? "raw" : "image",
+        use_filename: true,
+        unique_filename: true,
+        overwrite: false,
+      },
+      (error, result) => {
+        if (error) {
+          console.error("❌ Cloudinary upload error:", error);
+          return reject(error);
+        }
+
+        resolve({
+          secureUrl: result.secure_url,      // normalized keys
+          publicId: result.public_id,
+          resourceType: result.resource_type,
+          bytes: result.bytes,
+          format: result.format,
+        });
+      }
+    );
+
+    streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+  });
 };
 
 export { uploadCloudinary };

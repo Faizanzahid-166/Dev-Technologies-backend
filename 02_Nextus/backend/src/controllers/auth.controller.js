@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { 
   hashPassword, 
   comparePassword, 
-  signToken, 
+  signToken,  
   generateOTP, 
   getAuthCookieHeader,
   clearAuthCookieHeader

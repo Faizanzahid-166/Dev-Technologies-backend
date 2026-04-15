@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import { errorHandler } from "./middlewares/error.middleware.js";
+import { errorHandler, multerErrorHandler } from "./middlewares/error.middleware.js";
 
 // Routes
 import authRoutes from "./routes/auth.routes.js";
@@ -48,16 +48,17 @@ server.use(express.urlencoded({ extended: true, limit: "16kb" }));
 server.use(express.static("public"));
 server.use(cookieParser());
 server.use(morgan("dev"));
+server.use(multerErrorHandler)
 
 /* =======================
    ROUTES
 ======================= */
 server.use("/api/auth", authRoutes);
+server.use("/api/chat", messageRoutes);
+server.use("/api/documents", documentRoutes);
 server.use("/api/profile", profileRoutes);
 server.use("/api/meetings", meetingRoutes);
-server.use("/api/chat", messageRoutes);
 server.use("/api/video", videoRoutes);
-server.use("/api/documents", documentRoutes);
 server.use("/api/payments", paymentRoutes);
 server.use("/api/appwritedocuments", appwriteRoutes);
 

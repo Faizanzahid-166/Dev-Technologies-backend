@@ -1,7 +1,10 @@
 // src/pages/UserDashboard.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentUserThunk, logoutThunk } from "../../../redux/authSliceTunk/authTunk.js";
+import {
+  getCurrentUserThunk,
+  logoutThunk,
+} from "../../../redux/authSliceTunk/authTunk.js";
 import { useNavigate } from "react-router";
 
 function User() {
@@ -22,42 +25,80 @@ function User() {
       .catch((err) => console.error(err));
   };
 
-  if (loading || !user) return <div>Loading...</div>;
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Loading profile...
+      </div>
+    );
+  }
 
-  if (error) return <div className="text-red-500">{JSON.stringify(error)}</div>;
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {JSON.stringify(error)}
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg overflow-hidden">
 
-        <p>
-          <strong>Name:</strong> {user.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-        <p>
-          <strong>Role:</strong> {user.role}
-        </p>
-        {user.customerType && (
-          <p>
-            <strong>Customer Type:</strong> {user.customerType}
-          </p>
-        )}
-        <p>
-          <strong>Email Verified:</strong> {user.emailVerified ? "Yes" : "No"}
-        </p>
+        {/* Header */}
+        <div className="bg-blue-600 p-6 text-white">
+          <h1 className="text-2xl font-semibold">User Dashboard</h1>
+          <p className="text-sm opacity-90">Account information</p>
+        </div>
 
-        <button
-          onClick={handleLogout}
-          className="mt-6 w-full py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
-        >
-          Logout
-        </button>
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          <InfoRow label="Name" value={user.name} />
+          <InfoRow label="Email" value={user.email} />
+          <InfoRow label="Role" value={user.role} />
+
+          {user.customerType && (
+            <InfoRow label="Customer Type" value={user.customerType} />
+          )}
+
+          <InfoRow
+            label="Email Verified"
+            value={user.emailVerified ? "Yes" : "No"}
+            badge={user.emailVerified}
+          />
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 border-t">
+          <button
+            onClick={handleLogout}
+            className="w-full py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-medium transition"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
+const InfoRow = ({ label, value, badge }) => (
+  <div className="flex items-center justify-between">
+    <span className="text-gray-500 text-sm">{label}</span>
+    {typeof badge === "boolean" ? (
+      <span
+        className={`px-3 py-1 text-xs rounded-full font-medium ${
+          badge
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+        }`}
+      >
+        {value}
+      </span>
+    ) : (
+      <span className="font-medium text-gray-800">{value}</span>
+    )}
+  </div>
+);
 
 export default User;

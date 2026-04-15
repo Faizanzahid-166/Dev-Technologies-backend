@@ -9,10 +9,10 @@ import {
 } from "./chatTunk.js";
 
 const initialState = {
-  conversations: [],      // WhatsApp left sidebar
+  conversations: [],       // WhatsApp left sidebar
   currentConversation: null,
-  messages: [],           // messages of open chat
-  chatUsers: [],          // all users for new chat
+  messages: [],            // messages of open chat
+  chatUsers: [],           // all users for new chat
   loading: false,
   error: null,
 };
@@ -26,15 +26,19 @@ const chatSlice = createSlice({
       state.messages = []; // clear old messages
     },
 
+    // 🔥 socket.io incoming message
     addMessageRealtime: (state, action) => {
-      // socket.io incoming message
-      state.messages.push(action.payload);
+      const message = action.payload;
 
-      // update last message in sidebar
+      state.messages.push(message);
+
+      // update sidebar last message
       const convo = state.conversations.find(
-        (c) => c._id === action.payload.conversationId
+        (c) => c._id === message.conversationId
       );
-      if (convo) convo.lastMessage = action.payload;
+      if (convo) {
+        convo.lastMessage = message;
+      }
     },
   },
 
@@ -47,14 +51,14 @@ const chatSlice = createSlice({
       })
       .addCase(createOrGetConversationThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentConversation = action.payload.data;
+        state.currentConversation = action.payload;
 
-        // add to sidebar if not exists
         const exists = state.conversations.find(
-          (c) => c._id === action.payload.data._id
+          (c) => c._id === action.payload._id
         );
+
         if (!exists) {
-          state.conversations.unshift(action.payload.data);
+          state.conversations.unshift(action.payload);
         }
       })
       .addCase(createOrGetConversationThunk.rejected, (state, action) => {
@@ -68,7 +72,7 @@ const chatSlice = createSlice({
       })
       .addCase(getMyConversationsThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.conversations = action.payload.data;
+        state.conversations = action.payload;
       })
       .addCase(getMyConversationsThunk.rejected, (state, action) => {
         state.loading = false;
@@ -81,7 +85,7 @@ const chatSlice = createSlice({
       })
       .addCase(getConversationMessagesThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.messages = action.payload.data;
+        state.messages = action.payload;
       })
       .addCase(getConversationMessagesThunk.rejected, (state, action) => {
         state.loading = false;
@@ -94,13 +98,16 @@ const chatSlice = createSlice({
       })
       .addCase(sendMessageThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.messages.push(action.payload.data);
 
-        // update sidebar last message
+        const message = action.payload;
+        state.messages.push(message);
+
         const convo = state.conversations.find(
-          (c) => c._id === action.payload.data.conversationId
+          (c) => c._id === message.conversationId
         );
-        if (convo) convo.lastMessage = action.payload.data;
+        if (convo) {
+          convo.lastMessage = message;
+        }
       })
       .addCase(sendMessageThunk.rejected, (state, action) => {
         state.loading = false;
@@ -113,7 +120,7 @@ const chatSlice = createSlice({
       })
       .addCase(getAllUsersForChatThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.chatUsers = action.payload.data;
+        state.chatUsers = action.payload;
       })
       .addCase(getAllUsersForChatThunk.rejected, (state, action) => {
         state.loading = false;

@@ -17,7 +17,9 @@ export const createOrGetConversationThunk = createAsyncThunk(
     try {
       return await createOrGetConversationApi(receiverId);
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to create conversation"
+      );
     }
   }
 );
@@ -29,7 +31,9 @@ export const getMyConversationsThunk = createAsyncThunk(
     try {
       return await getMyConversationsApi();
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch conversations"
+      );
     }
   }
 );
@@ -37,16 +41,25 @@ export const getMyConversationsThunk = createAsyncThunk(
 /* ---------------- SEND MESSAGE ---------------- */
 export const sendMessageThunk = createAsyncThunk(
   "chat/sendMessage",
-  async ({ conversationId, text }, { rejectWithValue }) => {
+  async (
+    { conversationId, text = "", attachments = [] },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await sendMessageApi({ conversationId, text });
+      const message = await sendMessageApi({
+        conversationId,
+        text,
+        attachments,
+      });
 
       // 🔥 emit socket message after success
-      socket.emit("sendMessage", res.data);
+      socket.emit("sendMessage", message);
 
-      return res;
+      return message;
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to send message"
+      );
     }
   }
 );
@@ -58,7 +71,9 @@ export const getConversationMessagesThunk = createAsyncThunk(
     try {
       return await getConversationMessagesApi(conversationId);
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch messages"
+      );
     }
   }
 );
@@ -70,7 +85,9 @@ export const getAllUsersForChatThunk = createAsyncThunk(
     try {
       return await getAllUsersForChatApi();
     } catch (error) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch users"
+      );
     }
   }
 );

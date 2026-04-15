@@ -14,8 +14,7 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: [
-      "http://localhost:5173",
-      "https://dev-technologies-frontend-9xqc.vercel.app",
+      "http://localhost:5173", "https://dev-technologies-frontend-9xqc.vercel.app",
     ],
     credentials: true,
   },
@@ -46,8 +45,6 @@ io.on("connection", (socket) => {
     io.emit("onlineUsers", Array.from(onlineUsers.keys()));
   });
 });
-
-
 
 /* =======================
    START SERVER

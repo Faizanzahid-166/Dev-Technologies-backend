@@ -16,7 +16,7 @@ export const loginThunk = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await loginApi(data);
-      console.log(res)
+     // console.log(res)
         const userId = res.data.user._id; // ✅ CORRECT PATH
 
       // connect socket AFTER login

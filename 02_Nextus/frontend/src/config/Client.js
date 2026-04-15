@@ -1,11 +1,11 @@
 // src/api/axiosConfig.js
 import axios from "axios";
-import realtimEnv from "./realtimeEnv.js";
+import ENV from "./ENV.js";
 
-const api = axios.create({
-  baseURL: realtimEnv.backendUrl || "http://localhost:3000",
+const Client = axios.create({
+  baseURL: ENV.backendUrl || "http://localhost:3000",
   headers: { "Content-Type": "application/json" },
   withCredentials: true, // ✅ cookie auth
 });
 
-export default api;
+export default Client;

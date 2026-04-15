@@ -2,16 +2,18 @@ import App from './App.jsx'
 
 import {Home,
         Registration, VerifyOtpPage, Login, 
-         User, Admin,
+         UserPannel, User,
+         Admin,
+         ChatPage,
+         Documents, //MyDocs,UploadDoc,Download,AddSignature,
         // Profile,Listofusers,
-        // MyDocs,UploadDoc,Documents,Download,AddSignature,
         // MeetingsPage, UserList,Messages,Chat,
         // PaymentPage,PaymentForm,
         NotFound
        } from './pages/index.js'
 
 import {createBrowserRouter,} from 'react-router'
-//import ProtectedRoute from './components/ProtectedRoute.jsx';
+// import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 
 
@@ -35,24 +37,32 @@ const routers = createBrowserRouter([
        { path: "/login", element: <Login /> },
 
       // // dashboard
-      { path: "/dashboard/user-pannel", element: <User /> },
+      { path: "/dashboard/user-pannel", element: <UserPannel />,
+         children: [
+          // 1-user-account-page
+           { index: true, element: <User /> },
+           { path: "/dashboard/user-pannel/info",  element: <User /> }, 
+
+           // 2-chat app
+            { path: "/dashboard/user-pannel/chat/ChatPage", element: <ChatPage /> },
+
+           // 3- docomentation
+              { path: "/dashboard/user-pannel/documents", element: <Documents />,
+                children: [
+                  // { path: "/documents/upload", element: <UploadDoc /> },
+                  // { path: "/documents/list", element: <MyDocs /> },
+                  // { path: "/documents/signature", element: <AddSignature /> },
+                  // { path: "/documents/download", element: <Download /> },
+                  ] 
+              },
+
+         ]
+        },
+    
+
       { path: "/dashboard/admin-pannel", element: <Admin /> },
-      
-      // //profile
-      // { path: "/profile", element: <Profile /> },
       //  { path: "/finduser", element: <Listofusers /> },
 
-
-      // // doc routes
-      // { path: "/documents", 
-      //   element: <ProtectedRoute><Documents /></ProtectedRoute>,
-      //   children: [
-      //   { path: "/documents/list", element: <ProtectedRoute><MyDocs /></ProtectedRoute> },
-      //   { path: "/documents/upload", element: <ProtectedRoute><UploadDoc /></ProtectedRoute> },
-      //   { path: "/documents/download", element: <ProtectedRoute><Download /></ProtectedRoute> },
-      //   { path: "/documents/signature", element: <ProtectedRoute><AddSignature /></ProtectedRoute> },
-      //   ] 
-      // },
 
       // //meeting
       //  { path: "/messages", element: <ProtectedRoute><Messages /></ProtectedRoute>,
