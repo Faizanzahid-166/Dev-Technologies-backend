@@ -1,5 +1,5 @@
-import PDF from "../models/PDF.js";
-import { cloudinary } from "../database/cloudinary.js";
+import PDF from "../../models/documents/PDF.js";
+import { cloudinary } from "../../database/cloudinary/cloudinary.js";
 
 /**
  * Cloudinary raw uploads are served with Content-Disposition: attachment by default,
