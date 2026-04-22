@@ -1,12 +1,12 @@
 import express from "express";
-import { upload } from "../middlewares/upload.middleware.js";
+import { upload } from "../../middlewares/upload.middleware.js";
 import {
   uploadDocument,
   getMyDocuments, docsPreview,
   getDocumentById,
   addSignature,
-} from "../controllers/document-logic/document.controller.js";
-import { protect } from "../middlewares/auth.middleware.js";
+} from "../../controllers/document-logic/document.controller.js";
+import { protect } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 

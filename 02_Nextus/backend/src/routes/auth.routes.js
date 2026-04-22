@@ -6,7 +6,7 @@ import {
   getCurrentUser,
   verifyOTP,
   resendOTP
-} from "../controllers/auth.controller.js";
+} from "../controllers/auth/auth.controller.js";
 import { protect } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();

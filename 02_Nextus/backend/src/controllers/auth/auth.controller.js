@@ -1,5 +1,5 @@
-import User from "../models/user.model.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
+import User from "../../models/user.model.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
 import { 
   hashPassword, 
   comparePassword, 
@@ -7,11 +7,11 @@ import {
   generateOTP, 
   getAuthCookieHeader,
   clearAuthCookieHeader
-} from '../lib/auth.js';
-import {getUserFromCookies} from '../lib/getUserFromCookies.js'
-import { sendVerificationEmail } from '../services/mail.service.js';
-import { ApiSuccess, ApiError } from '../utils/apiResponse.js';
-import { signupSchema, loginSchema } from '../utils/validators.js';
+} from '../../lib/auth.js';
+import {getUserFromCookies} from '../../lib/getUserFromCookies.js'
+import { sendVerificationEmail } from '../../services/mail.service.js';
+import { ApiSuccess, ApiError } from '../../utils/apiResponse.js';
+import { signupSchema, loginSchema } from '../../utils/validators.js';
 
 /// -------------------- SIGNUP with OTP --------------------
 export const registerUser = asyncHandler(async (req, res) => {
