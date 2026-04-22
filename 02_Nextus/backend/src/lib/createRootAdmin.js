@@ -33,6 +33,7 @@ export async function createRootAdmin() {
       role: "admin",
       isRoot: true,
       emailVerified: true,
+      customerType: "admin", // ✅ ADD THIS
     });
 
     console.log("✅ Root admin created:", rootEmail);

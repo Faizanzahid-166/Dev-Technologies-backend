@@ -170,9 +170,19 @@ export const logoutUser = asyncHandler(async (req, res) => {
 
 // -------------------- GET CURRENT USER --------------------
 export const getCurrentUser = asyncHandler(async (req, res) => {
-  const user = await getUserFromCookies(req);
-  if (!user) throw new ApiError(401, "Unauthorized");
+  // const user = await getUserFromCookies(req);
+  // if (!user) throw new ApiError(401, "Unauthorized");
 
-  const { password: pwd, ...userWithoutPassword } = user.toObject();
-  res.json(new ApiSuccess(200, { user: userWithoutPassword }, "Current user fetched"));
+  // const { password: pwd, ...userWithoutPassword } = user.toObject();
+  // res.json(new ApiSuccess(200, { user: userWithoutPassword }, "Current user fetched"));
+  try {
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    }, new ApiSuccess(200, { user: req.user }, "Current user fetched")
+  )
+  } catch (error) {
+    throw new ApiError(500, "Failed to fetch current user");
+  }
+  
 });

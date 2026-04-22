@@ -5,7 +5,7 @@ import { Server } from "socket.io";
 import { server as app } from "./server.js";
 import connectDB from "./database/mongodb/db.js";
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // 1️⃣ Create HTTP server from Express app
 const httpServer = http.createServer(app);
