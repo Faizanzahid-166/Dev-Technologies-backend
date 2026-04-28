@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import Client from "../config/Client.js";
 
-const socket = io(Client.backendUrl || "http://localhost:3000", {
+const socket = io(Client.backendUrl || "http://localhost:5000", {
   withCredentials: true, // ✅ VERY IMPORTANT (cookie auth)
   autoConnect: false,    // we will connect manually
 });
