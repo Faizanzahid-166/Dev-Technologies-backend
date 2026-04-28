@@ -1,4 +1,4 @@
-import User from "../models/user.model.js";
+import User from "../models/client/user.model.js";
 import { verifyToken } from "./auth.js";
 import cookie from "cookie";
 

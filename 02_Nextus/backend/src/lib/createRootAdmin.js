@@ -1,4 +1,4 @@
-import User from "../models/user.model.js"; // Adjust path for your project
+import User from "../models/client/user.model.js"; // Adjust path for your project
 import bcrypt from "bcryptjs";
 
 /**

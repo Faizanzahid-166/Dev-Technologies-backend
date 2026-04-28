@@ -1,5 +1,5 @@
 // controllers/user.controller.js
-import User from "../../models/user.model.js";
+import User from "../../models/client/user.model.js";
 import Conversation from "../../models/chat/conversation.model.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { ApiSuccess, ApiError } from "../../utils/apiResponse.js";

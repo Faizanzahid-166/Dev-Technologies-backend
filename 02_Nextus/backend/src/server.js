@@ -7,17 +7,7 @@ import { errorHandler, multerErrorHandler } from "./middlewares/error.middleware
 
 // Routes
 import authRoutes from "./routes/auth.routes.js";
-import profileRoutes from "./routes/profile.routes.js";
-import meetingRoutes from "./routes/meeting.routes.js";
 import messageRoutes from "./routes/meassage.routes.js";
-import videoRoutes from "./routes/video.routes.js";
-
-// document routes
-import documentRoutes from "./routes/documents/document.routes.js";
-import documentRoutesV2 from "./routes/documents/pdf.Routes.js";
-import paymentRoutes from "./routes/payment.routes.js";
-import appwriteRoutes from "./routes/appwritedocument.routes.js";
-
 const server = express();
 
 /* =======================
@@ -58,13 +48,6 @@ server.use(multerErrorHandler)
 ======================= */
 server.use("/api/auth", authRoutes);
 server.use("/api/chat", messageRoutes);
-server.use("/api/documents", documentRoutes);
-server.use("/api/pdfs", documentRoutesV2);
-server.use("/api/profile", profileRoutes);
-server.use("/api/meetings", meetingRoutes);
-server.use("/api/video", videoRoutes);
-server.use("/api/payments", paymentRoutes);
-server.use("/api/appwritedocuments", appwriteRoutes);
 server.get("/api/health", (req, res) => {
       console.log("🔥 Frontend hit backend");
       res.json({ success: true, message: "Backend connected ⚡" });
