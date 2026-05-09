@@ -1,28 +1,30 @@
-// config/db.js
-import mongoose from 'mongoose';
-import {DB_NAME} from './constant.js'
-
-// const connectDB = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI);
-//     console.log('MongoDB connected');
-//   } catch (err) {
-//     console.error(err);
-//     process.exit(1);
-//   }
-// };
+import mongoose from "mongoose";
+import { DB_NAME } from "./constant.js";
+// import { createRootAdmin } from "../../lib/createRootAdmin.js"; // your admin creation utility
 
 const connectDB = async () => {
-    try {
-        const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
-        console.log(`MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`);
-        //console.log(connectionInstance)
-        console.log("MONGO_URI =", process.env.MONGODB_URI);
-        
-    } catch (error) {
-        console.log("MONGODB connection error", error);
-        process.exit(1)        
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI is not set in environment variables");
     }
-}
 
-export default connectDB
+    // Connect to MongoDB without deprecated options
+    const connection = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      family: 4,
+    });
+
+    console.log(`✅ MongoDB connected! DB HOST: ${connection.connection.host}`);
+    console.log(DB_NAME, "database");
+
+
+    // Automatically create root admin if it doesn't exist
+    // await createRootAdmin();
+  } catch (error) {
+    console.error("🔥 MongoDB connection error:", error);
+    process.exit(1);
+  }
+};
+
+export default connectDB;
