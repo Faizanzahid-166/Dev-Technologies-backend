@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "./constant.js";
-import { createRootAdmin } from "../../lib/createRootAdmin.js"; // your admin creation utility
+// import { createRootAdmin } from "../../lib/createRootAdmin.js"; // your admin creation utility
 
 const connectDB = async () => {
   try {
@@ -20,7 +20,7 @@ const connectDB = async () => {
 
 
     // Automatically create root admin if it doesn't exist
-    await createRootAdmin();
+    // await createRootAdmin();
   } catch (error) {
     console.error("🔥 MongoDB connection error:", error);
     process.exit(1);
