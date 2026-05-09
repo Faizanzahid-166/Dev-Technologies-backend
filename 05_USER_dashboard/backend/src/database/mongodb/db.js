@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 import { DB_NAME } from "./constant.js";
-// import { createRootAdmin } from "../../lib/createRootAdmin.js"; // your admin creation utility
+import { createRootAdmin } from "../../lib/createRootAdmin.js"; // your admin creation utility
 
 const connectDB = async () => {
   try {
-    if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URI is not set in environment variables");
+    if (!process.env.MONGO_DB_URL) {
+      throw new Error("MONGO_DB_URL is not set in environment variables");
     }
 
     // Connect to MongoDB without deprecated options
-    const connection = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`, {
+    const connection = await mongoose.connect(`${process.env.MONGO_DB_URL}/${DB_NAME}`, {
       serverSelectionTimeoutMS: 30000,
       socketTimeoutMS: 45000,
       family: 4,
@@ -20,7 +20,7 @@ const connectDB = async () => {
 
 
     // Automatically create root admin if it doesn't exist
-    // await createRootAdmin();
+    await createRootAdmin();
   } catch (error) {
     console.error("🔥 MongoDB connection error:", error);
     process.exit(1);

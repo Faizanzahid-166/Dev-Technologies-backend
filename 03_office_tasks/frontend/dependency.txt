@@ -1,0 +1,17 @@
+Remove-Item -Recurse -Force node_modules
+Remove-Item package-lock.json
+
+npm install react@18 react-dom@18
+
+npm install --legacy-peer-deps
+
+npm install @headlessui/react @heroicons/react date-fns quill react-quill @tailwindcss/typography
+npm install react-scripts@5.0.1
+
+npm install react-router-dom axios@latest react-hot-toast framer-motion
+npm install lucide-react@latest
+npm install @reduxjs/toolkit react-redux
+
+=>npm install tailwindcss @tailwindcss/vite
+  import tailwindcss from '@tailwindcss/vite'
+  @import "tailwindcss";

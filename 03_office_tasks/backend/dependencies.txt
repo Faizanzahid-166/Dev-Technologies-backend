@@ -1,0 +1,2 @@
+npm install bcryptjs cloudinary cookie cookie-parser cors dotenv express express-validator helmet ioredis jsonwebtoken mongoose morgan multer multer-storage-cloudinary
+npm install --save-dev nodemon
