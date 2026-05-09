@@ -70,6 +70,9 @@ export const deleteProduct = async (id) => {
   return res.data;
 };
 
+// ----------------- Banner APIs -----------------
+// add /banner endpoint to backend first, then uncomment these
+
 // Banner APIs (if you have them later)
 
 // export const getBanners = (params) => {
