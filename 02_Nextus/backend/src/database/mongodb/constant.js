@@ -1,1 +1,0 @@
-export const DB_NAME = "02_chat_app"
