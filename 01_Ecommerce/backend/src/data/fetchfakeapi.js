@@ -1,9 +1,10 @@
 // src/data/fetchfakeapi.js
+import "../config/dotenv.js"; // ✅ MUST be first
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
 import Product from "../models/product.model.js";
-import connectDB from "../config/database.js";
+import connectDB from "../database/database.js";
 
 dotenv.config();
 

@@ -117,10 +117,10 @@ export const addToCart = (productId, quantity, token) =>
     "/cart",
     { productId, quantity },
     { headers: { Authorization: `Bearer ${token}` } }
-  );
+  ).then((res) => res.data);
 
 export const getCart = (token) =>
-  BASE_URL.get("/cart", { headers: { Authorization: `Bearer ${token}` } });
+  BASE_URL.get("/cart", { headers: { Authorization: `Bearer ${token}` } }).then((res) => res.data);
 
 // urls.js
 // export const updateCartItem = (productId, quantity, token) =>
@@ -135,11 +135,11 @@ export const updateCartItem = (productId, quantity, token) =>
     `/cart/item/${productId}`,
     { quantity },
     { headers: { Authorization: `Bearer ${token}` } }
-  );
+  ).then((res) => res.data);
 
 
 // urls.js
 export const removeFromCart = (productId, token) =>
   BASE_URL.delete(`/cart/item/${productId}`, {
     headers: { Authorization: `Bearer ${token}` },
-  });
+  }).then((res) => res.data);

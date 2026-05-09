@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
+    if (savedUser && savedUser !== "undefined") {
       setUser(JSON.parse(savedUser)); // Restore full user data
     }
      setLoading(false); // ✅ done checking storage

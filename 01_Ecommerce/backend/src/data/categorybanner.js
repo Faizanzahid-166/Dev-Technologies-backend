@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Category from "../models/categorymodel.js";
-import connectDB from "../config/database.js";
+import connectDB from "../database/database.js";
 dotenv.config();
 
 try {

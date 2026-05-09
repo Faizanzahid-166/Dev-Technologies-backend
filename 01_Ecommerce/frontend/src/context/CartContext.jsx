@@ -1,21 +1,21 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as cartApi from "../api/urls.js";
+import { useAuth } from "./AuthContext.jsx";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const token = localStorage.getItem("token");
+  const { user } = useAuth();
+  const token = user?.token;
 
-  // Optional: get userId if backend needs it
-  const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?._id;
 
   // Load cart from backend
   useEffect(() => {
     if (token) {
       cartApi.getCart(token)
-        .then((res) => setCart(res.data.items || []))
+        .then((data) => setCart(data.items || []))
         .catch((err) => console.error("Load cart error:", err));
     }
   }, [token]);

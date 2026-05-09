@@ -1,12 +1,10 @@
+import "../config/dotenv.js"; // ✅ MUST be first
 
-import dotenv from "dotenv";
 import mongoose from "mongoose";
-import connectDB from "../config/database.js";
+import connectDB from "../database/database.js";
 import Cart from "../models/cart.model.js";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
-
-dotenv.config();
 
 try {
   await connectDB();
@@ -18,19 +16,21 @@ try {
 
   // Get the first user
   const user = await User.findOne();
+
   if (!user) {
     console.error("❌ No user found. Please seed user first.");
     process.exit(1);
   }
 
-  // Get some products
+  // Get products
   const products = await Product.find();
+
   if (!products.length) {
     console.error("❌ No products found. Please seed products first.");
     process.exit(1);
   }
 
-  // Pick 3 random products
+  // Random items
   const items = products
     .sort(() => 0.5 - Math.random())
     .slice(0, 3)
@@ -39,13 +39,16 @@ try {
       quantity: Math.floor(Math.random() * 3) + 1,
     }));
 
-  // Create the cart
+  // Create cart
   await Cart.create({
     userId: user._id,
     items,
   });
 
-  console.log(`✅ Cart created for user ${user._id} with ${items.length} items.`);
+  console.log(
+    `✅ Cart created for user ${user._id} with ${items.length} items.`
+  );
+
   process.exit(0);
 
 } catch (err) {
