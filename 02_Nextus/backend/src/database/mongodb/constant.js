@@ -1,1 +1,1 @@
-export const DB_NAME = "04_nextus_clone"
+export const DB_NAME = "02_chat_app"
