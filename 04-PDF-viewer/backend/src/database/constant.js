@@ -1,1 +1,1 @@
-export const DB_NAME = "03_nextus_clone";
+export const DB_NAME = "04-PDF-viewer";
