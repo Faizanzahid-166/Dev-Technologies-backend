@@ -1,0 +1,1 @@
+export const DB_NAME = "06_blog_post"

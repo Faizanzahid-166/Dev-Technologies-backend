@@ -13,7 +13,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "pdf-vault",
+    folder: "00_pdf-vault",
     resource_type: "raw",
     // format: "pdf",
     // allowed_formats: ["pdf"],

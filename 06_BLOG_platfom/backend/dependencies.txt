@@ -1,0 +1,6 @@
+npm install cookie cookie-parser cors dotenv express
+npm install bcryptjs jsonwebtoken mongoose 
+npm install  helmet ioredis zod morgan 
+npm install  cloudinary multer multer-storage-cloudinary streamifier
+npm install --save-dev nodemon 
+npm install  express-validator express-rate-limit slugify uuid
